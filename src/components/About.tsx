@@ -1,40 +1,12 @@
+import { formatNumber } from "@/extra/formatNumber";
+import { YouTubeService } from "@/services/YouTubeService";
 import Image from "next/image";
 
-import { google } from "googleapis";
-
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-);
-oauth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-});
-
-const youtubeData = google.youtube({ version: "v3", auth: oauth2Client });
-const youtubeAnalytics = google.youtubeAnalytics({
-  version: "v2",
-  auth: oauth2Client,
-});
-
 export default async function About() {
-  const subRes = await youtubeData.channels.list({
-    mine: true,
-    part: ["statistics"],
-  });
-  const subs = subRes.data.items?.[0]?.statistics?.subscriberCount || "N/A";
-
-  const today = new Date().toISOString().split("T")[0];
-  const lastMonth = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-    .toISOString()
-    .split("T")[0]; // Hace 30 días
-
-  const viewsRes = await youtubeAnalytics.reports.query({
-    ids: "channel==MINE",
-    startDate: lastMonth,
-    endDate: today,
-    metrics: "views",
-  });
-  const views = viewsRes.data.rows?.[0]?.[0] || "N/A";
+  const [subscribers, monthlyViews] = await Promise.all([
+    YouTubeService.getSubscribers(),
+    YouTubeService.getMonthlyViews(),
+  ]);
 
   return (
     <section
@@ -48,9 +20,10 @@ export default async function About() {
               <div className="ring-primary ring-offset-base-100 w-75 rounded-full ring-2 ring-offset-2">
                 <Image
                   src="/profile_picture.png"
+                  alt="Picture of the author"
                   width="800"
                   height="600"
-                  alt="Picture of the author"
+                  priority
                 />
               </div>
             </div>
@@ -68,7 +41,7 @@ export default async function About() {
           <div className="flex gap-4">
             <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-md flex-1">
               <span className="block text-2xl font-bold text-zinc-100 mb-1">
-                {subs}
+                {formatNumber(Number(subscribers))}
               </span>
               <span className="text-xs text-zinc-500 uppercase tracking-wider">
                 Suscriptores
@@ -76,7 +49,7 @@ export default async function About() {
             </div>
             <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-md flex-1">
               <span className="block text-2xl font-bold text-zinc-100 mb-1">
-                {views}
+                {formatNumber(Number(monthlyViews))}
               </span>
               <span className="text-xs text-zinc-500 uppercase tracking-wider">
                 Vistas Mensuales

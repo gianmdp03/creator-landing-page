@@ -6,10 +6,10 @@ const Navbar = (props: Props) => {
   return (
     <nav className="fixed w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="font-bold text-xl tracking-tighter">CREADOR.</span>
+        <span className="font-bold text-xl tracking-tighter">ErickZenkai</span>
         <div className="hidden md:flex space-x-8 text-sm font-medium text-zinc-400">
           <Link href="#about" className="hover:text-zinc-50 transition-colors">
-            Sobre Mí
+            Inicio
           </Link>
           <Link
             href="#content"
@@ -17,7 +17,10 @@ const Navbar = (props: Props) => {
           >
             Contenido
           </Link>
-          <Link href="#videos" className="hover:text-zinc-50 transition-colors">
+          <Link
+            href="#horizontal-videos"
+            className="hover:text-zinc-50 transition-colors"
+          >
             Videos
           </Link>
           <Link
