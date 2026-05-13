@@ -1,12 +1,12 @@
 import { ContentCardType } from "@/types/content";
-import React from "react";
+import next from "next";
 
 type Props = {};
 
 const fetchContentCards = async (): Promise<ContentCardType[]> => {
-  const response = await fetch(
-    "https://gist.githubusercontent.com/gianmdp03/e8052dc990abc29c149738afa04341b3/raw/a4f8b97aa7a8193dd23bf91c4dfa9aeae091c0a4/content_card.json",
-  );
+  const response = await fetch(process.env.GIST_LINK as string, {
+    cache: "no-store",
+  });
   if (!response.ok) throw new Error("Error al obtener los datos");
   return await response.json();
 };
@@ -17,10 +17,10 @@ const Content = async (props: Props) => {
     <section id="content" className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="mb-12">
-          <h2 className="text-3xl font-semibold mb-4">Ejes de Contenido</h2>
-          <p className="text-zinc-400">
-            Las categorías principales que abordo en mis canales.
-          </p>
+          <h2 className="text-3xl font-semibold mb-4">
+            ¿De que se trata mi canal?
+          </h2>
+          <p className="text-zinc-400">Descubre de que trata mi canal.</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.map((card) => (

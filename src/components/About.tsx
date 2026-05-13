@@ -31,8 +31,8 @@ export default async function About() {
         </div>
 
         <div>
-          <h2 className="text-3xl font-semibold mb-6">Soy ErickZenkai</h2>
-          <p className="text-zinc-400 leading-relaxed mb-6">
+          <h2 className="text-4xl font-semibold mb-6">Soy ErickZenkai</h2>
+          <p className="text-zinc-400 leading-relaxed mb-6 text-justify">
             Soy un creador de contenido enfocado en la intersección entre la
             tecnología de consumo y el desarrollo profesional. Mi objetivo es
             desmenuzar temas complejos y presentarlos con una calidad
